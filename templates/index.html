@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Pi-o-near</title>
+    <link rel="icon" href="{{ url_for('static', filename='img/pi-icon.ico') }}" type="image/x-ico"/>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pi-o-near.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui.min.css') }}"/>
+    
+    <script src="{{ url_for('static', filename='js/jquery-3.1.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery-ui.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery-touch.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/pi-o-near.helpers.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/pi-o-near.controls.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/pi-o-near.ajax.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/pi-o-near.main.js') }}"></script>
+  </head>
+  <body>
+    <div id="car-wrapper">
+      <div id="video-frame">
+        <img id="video_stream" src="{{ url_for('videoFeed') }}?ratio={{ ratio }}&blackwhite={{ blackwhite }}"/>
+      </div>
+      <div id="controls">
+        <fieldset id="camera-buttons" class="button-wrapper">
+          <legend>Camera</legend>
+
+            {% for button in cameraButtons %}
+              <div
+                class="camera-button button-controller"
+                data-oncommand="{{  button['oncommand']  }}"
+                data-offcommand="{{  button['offcommand']  }}"
+                data-key="{{  button['key']  }}">
+                <div class="button-text-wrapper">
+                  <div class="button-text">
+                    {{  button['text'] | safe }}
+                  </div>
+                </div>
+              </div>
+              {% if button['break'] %}
+                <br/>
+              {% endif %}
+            {% endfor %}
+            
+        </fieldset>
+        <fieldset id="direction-buttons" class="button-wrapper">
+          <legend>Driving</legend>
+
+            <div id="driving_choice">
+              <div class="input-wrapper">
+                <input type="radio" name="driving_choice" id="driving_choice_buttons" value="1"/>
+                <label for="driving_choice_buttons">Buttons</label>
+              </div>
+              <div class="input-wrapper">
+                <input type="radio" name="driving_choice" id="driving_choice_joystick" value="2"/>
+                <label for="driving_choice_joystick">Joystick</label>
+              </div>
+              <div class="input-wrapper">
+                <input type="radio" name="driving_choice" id="driving_choice_accelerometer" value="3"/>
+                <label for="driving_choice_accelerometer">Accelerometer</label>
+              </div>
+            </div>
+
+            <div class="driveing-option-wrapper" id="driving_option_1">
+              {% for button in movementButtons %}
+                <div
+                  class="direction-button button-controller"
+                  data-oncommand="{{  button['oncommand']  }}"
+                  data-offcommand="{{  button['offcommand']  }}"
+                  data-key="{{  button['key']  }}">
+                  <div class="button-text-wrapper">
+                    <div class="button-text">
+                      {{  button['text'] | safe }}
+                    </div>
+                  </div>
+                </div>
+                {% if button['break'] %}
+                  <br/>
+                {% endif %}
+              {% endfor %}
+            
+              <div id="speed_slider_wrapper">
+                <div id="speed_value_holder">
+                  Speed
+                  <br/>
+                  <span id="speed_value">50</span>%
+                </div>
+                <div id="speed_slider" class="listen-for-change"></div>
+              </div>
+            </div>
+
+            <div class="driveing-option-wrapper" id="driving_option_2">
+              <div id="direction_joystick">
+                <div class="joystick-boundaries">
+                  <div class="joystick-grip" style="background-image: url('{{ url_for('static', filename='img/vignette.png') }}')">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="driveing-option-wrapper" id="driving_option_3">
+              <div id="phone_accelerometer">Tap here to start/end</div>
+            </div>
+          
+        </fieldset>
+      </div>
+    </div>
+    
+  </body>
+</html>
